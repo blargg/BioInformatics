@@ -1,8 +1,11 @@
 import random
 
 
+bases = ['a', 'c', 'g', 't']
+
+
 def randomBase():
-    return random.choice(['a', 'c', 'g', 't'])
+    return random.choice(bases)
 
 
 def randomSequence(length):
@@ -10,6 +13,13 @@ def randomSequence(length):
     for i in range(length):
         seq += randomBase()
     return seq
+
+
+def isSeq(seq):
+    for c in seq:
+        if c not in bases:
+            return False
+    return True
 
 
 def randomMotif(length, numVaried):

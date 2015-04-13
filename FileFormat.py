@@ -11,9 +11,19 @@ def writeMotif(filename, motifname, motif):
         f.write(motifFile(motifname, motif))
 
 
+def readMotifFile(filename):
+    with open(filename, 'r') as f:
+        return f.readline().split('\t')[2].lower()
+
+
 def writeMotifLength(filename, motif):
     with open(filename, 'w') as f:
         f.write(str(len(motif)))
+
+
+def readMotifLength(filename):
+    with open(filename, 'r') as f:
+        return int(f.readline())
 
 
 def writeSequences(filename, sequences):
@@ -23,10 +33,34 @@ def writeSequences(filename, sequences):
             f.write(s.upper() + "\n")
 
 
+def readSequences(filename):
+    sequences = []
+    with open(filename, 'r') as f:
+        while True:
+            f.readline()
+            seqline = f.readline().lower().strip()
+            if not seqline:
+                break
+
+            if Gen.isSeq(seqline):
+                sequences.append(seqline)
+            else:
+                print("read a line that was not a sequence:\n" + seqline)
+    return sequences
+
+
 def writeSites(filename, sites):
     with open(filename, 'w') as f:
         for site in sites:
             f.write(str(site) + "\n")
+
+
+def readSites(filename):
+    sites = []
+    with open(filename, 'r') as f:
+        for line in f:
+            sites.append(int(line.strip()))
+    return sites
 
 
 def generateDataset(name, ml, nm, sl, sc):
