@@ -39,8 +39,32 @@ def generateDataset(name, ml, nm, sl, sc):
     plantLocation = [x for (_, x) in plants]
 
     if not os.path.exists(folder):
-        os.mkdir(folder)
+        os.makedirs(folder)
     writeSequences(folder + "/sequences.fa", plantedseqs)
     writeMotifLength(folder + "/motiflength.txt", motif)
     writeMotif(folder + "/motif.txt", "MOTIF1", motif)
     writeSites(folder + "/sites.txt", plantLocation)
+
+
+def generateAllDatasets():
+    for i in range(10):
+        name = "dataset" + str(i) + "/set"
+        generateWithParameters(name)
+
+
+def generateWithParameters(name):
+    default_args = [name, 8, 1, 500, 10]
+    for nm in [0, 1, 2]:
+        args = default_args[:]
+        args[2] = nm
+        generateDataset(*args)
+
+    for ml in [6, 7, 8]:
+        args = default_args[:]
+        args[1] = ml
+        generateDataset(*args)
+
+    for sc in [5, 10, 20]:
+        args = default_args[:]
+        args[4] = sc
+        generateDataset(*args)
