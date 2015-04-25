@@ -64,7 +64,7 @@ def readSites(filename):
 
 
 def generateDataset(name, ml, nm, sl, sc):
-    folder = name + "_" + "_".join(str(x) for x in [ml, nm, sl, sc])
+    folder = name
 
     motif = Gen.randomMotif(ml, nm)
     seqs = [Gen.randomSequence(sl) for i in range(sc)]
@@ -81,24 +81,29 @@ def generateDataset(name, ml, nm, sl, sc):
 
 
 def generateAllDatasets():
-    for i in range(10):
-        name = "dataset" + str(i) + "/set"
-        generateWithParameters(name)
+    for args in generatePerameterSettings():
+        for i in range(10):
+            name = "datasets/dataset_" + "_".join(str(x) for x in args)\
+                   + "/dataset" + str(i)
+            generateDataset(name, *args)
 
 
 def generateWithParameters(name):
     default_args = [name, 8, 1, 500, 10]
-    for nm in [0, 1, 2]:
+
+    generateDataset(*default_args)
+
+    for nm in [0, 2]:
         args = default_args[:]
         args[2] = nm
         generateDataset(*args)
 
-    for ml in [6, 7, 8]:
+    for ml in [6, 7]:
         args = default_args[:]
         args[1] = ml
         generateDataset(*args)
 
-    for sc in [5, 10, 20]:
+    for sc in [5, 20]:
         args = default_args[:]
         args[4] = sc
         generateDataset(*args)
