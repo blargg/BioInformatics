@@ -31,6 +31,12 @@ def informationInMotif(selectedSubsequences):
     return total
 
 
+def extractSelections(motifLength, selections):
+    subsequences = [s[i:i+motifLength] for (s, i) in selections]
+    assert(all(len(s) == motifLength for s in subsequences))
+    return subsequences
+
+
 def informationInSelection(motifLength, selections):
     """ motif length is the lenth of the motif
     selections is a list of (sequence, position) where

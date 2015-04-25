@@ -1,4 +1,5 @@
 import GenerateSequence as Gen
+import Motif as M
 import os
 
 
@@ -63,6 +64,23 @@ def readSites(filename):
     return sites
 
 
+def writePositionWeightMatrix(filename, motifLength, selections):
+    subseq = M.extractSelections(motifLength, selections)
+
+    counts = [{base: 0 for base in Gen.bases} for i in range(motifLength)]
+
+    for seq in subseq:
+        for i, char in enumerate(seq):
+            counts[i][char] += 1
+
+    with open(filename, 'w') as f:
+        f.write(">PMOTIF\t" + str(motifLength) + "\n")
+        for pos in counts:
+            line = "\t".join(str(pos[c]) for c in Gen.bases)
+            f.write(line + "\n")
+        f.write("<")
+
+
 def generateDataset(name, ml, nm, sl, sc):
     folder = name
 
@@ -78,6 +96,29 @@ def generateDataset(name, ml, nm, sl, sc):
     writeMotifLength(folder + "/motiflength.txt", motif)
     writeMotif(folder + "/motif.txt", "MOTIF1", motif)
     writeSites(folder + "/sites.txt", plantLocation)
+
+
+def generatePerameterSettings():
+    allsettings = []
+    default_args = [8, 1, 500, 10]
+    allsettings.append(default_args)
+
+    generateDataset(*default_args)
+
+    for nm in [0, 2]:
+        args = default_args[:]
+        args[1] = nm
+        allsettings.append(args)
+
+    for ml in [6, 7]:
+        args = default_args[:]
+        args[0] = ml
+        allsettings.append(args)
+
+    for sc in [5, 20]:
+        args = default_args[:]
+        args[3] = sc
+        allsettings.append(args)
 
 
 def generateAllDatasets():
