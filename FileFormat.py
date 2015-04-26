@@ -92,18 +92,16 @@ def generateDataset(name, ml, nm, sl, sc):
 
     if not os.path.exists(folder):
         os.makedirs(folder)
-    writeSequences(folder + "/sequences.fa", plantedseqs)
-    writeMotifLength(folder + "/motiflength.txt", motif)
-    writeMotif(folder + "/motif.txt", "MOTIF1", motif)
-    writeSites(folder + "/sites.txt", plantLocation)
+    writeSequences(os.path.join(folder, "sequences.fa"), plantedseqs)
+    writeMotifLength(os.path.join(folder, "motiflength.txt"), motif)
+    writeMotif(os.path.join(folder, "motif.txt"), "MOTIF1", motif)
+    writeSites(os.path.join(folder, "sites.txt"), plantLocation)
 
 
 def generatePerameterSettings():
     allsettings = []
     default_args = [8, 1, 500, 10]
     allsettings.append(default_args)
-
-    generateDataset(*default_args)
 
     for nm in [0, 2]:
         args = default_args[:]
@@ -120,12 +118,15 @@ def generatePerameterSettings():
         args[3] = sc
         allsettings.append(args)
 
+    return allsettings
+
 
 def generateAllDatasets():
     for args in generatePerameterSettings():
         for i in range(10):
-            name = "datasets/dataset_" + "_".join(str(x) for x in args)\
-                   + "/dataset" + str(i)
+            name = os.path.join("datasets",
+                                "dataset_" + "_".join(str(x) for x in args),
+                                "dataset" + str(i))
             generateDataset(name, *args)
 
 
