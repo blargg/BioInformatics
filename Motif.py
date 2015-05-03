@@ -46,3 +46,8 @@ def informationInSelection(motifLength, selections):
     subsequences = [s[i:i+motifLength] for (s, i) in selections]
     assert(all(len(s) == motifLength for s in subsequences))
     return informationInMotif(subsequences)
+
+
+def infoInPositions(motifLength, sequences, positions):
+    assert len(sequences) == len(positions), "must be same length"
+    return informationInSelection(motifLength, zip(sequences, positions))

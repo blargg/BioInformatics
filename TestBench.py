@@ -2,7 +2,8 @@ import os
 import time
 from collections import namedtuple
 import Motif as M
-from FileFormat import readSequences, readSites, readMotifLength
+from FileFormat import (readSequences, readSites, readMotifLength,
+                        writePositionWeightMatrix, writeSites)
 
 PerformanceResults = namedtuple("PerformanceResults",
                                 ['time', 'algorithmScore', 'motifScore'])
@@ -52,6 +53,12 @@ def test(algorithm, datasetfolder):
     runScore = M.informationInSelection(motifLength, result)
     actualScore = M.informationInSelection(motifLength,
                                            zip(seq, actualLocations))
+
+    pwfilename = os.path.join(datasetfolder, "predictedmotif.txt")
+    writePositionWeightMatrix(pwfilename, motifLength, result)
+
+    sitesfilename = os.path.join(datasetfolder, "predictedsites.txt")
+    writeSites(sitesfilename, [site for (_, site) in result])
 
     return PerformanceResults(time=elapsedTime,
                               algorithmScore=runScore,
