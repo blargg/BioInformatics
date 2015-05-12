@@ -75,14 +75,16 @@ def greedy(motifLength, sequences):
 
     maxIndex = len(sequences[0]) - motifLength
     initialoptions = [[i, j] for i in range(maxIndex) for j in range(maxIndex)]
-    cumulative = max(initialoptions, key=evalWithSeq(sequences[:2]))
+    cumulative = sorted(initialoptions, key=evalWithSeq(sequences[:2]))[-20:]
+	
+    for k in range(20):
+        for i in range(2, len(sequences)):
+            options = []
+            for j in range(maxIndex):
+                copyList = cumulative[k][:]
+                copyList.append(j)
+                options.append(copyList)
+            cumulative[k] = max(options, key=evalWithSeq(sequences[:i+1]))
 
-    for i in range(2, len(sequences)):
-        options = []
-        for j in range(maxIndex):
-            copyList = cumulative[:]
-            copyList.append(j)
-            options.append(copyList)
-        cumulative = max(options, key=evalWithSeq(sequences[:i+1]))
-
+    cumulative = max(cumulative, key=evalWithSeq(sequences))
     return list(zip(sequences, cumulative))

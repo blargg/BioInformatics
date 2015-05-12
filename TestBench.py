@@ -29,6 +29,10 @@ def runOnGroup(algorithm, folder):
 
     print('average time = ' +
           str(float(sum(r.time for r in results)) / len(results)))
+    print('average algorithm score = ' +
+	      str(float(sum(r.algorithmScore for r in results)) / len(results)))
+    print('average motif score = ' +
+	      str(float(sum(r.motifScore for r in results)) / len(results)))
 
 
 def test(algorithm, datasetfolder):
