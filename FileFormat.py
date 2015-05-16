@@ -17,6 +17,25 @@ def readMotifFile(filename):
         return f.readline().split('\t')[2].lower()
 
 
+def readPredictedMotif(filename):
+    counts = {base: [] for base in Gen.bases}
+    totalLength = 0
+    with open(filename, 'r') as f:
+        f.readline()  # skip first line
+        for line in f.readlines():
+            if line.strip() == "<":
+                break
+            numbers = [int(x) for x in line.split('\t')]
+            totalLength += 1
+            for character, count in zip(Gen.bases, numbers):
+                counts[character].append(count)
+
+    motif = ""
+    for i in range(totalLength):
+        motif += max(Gen.bases, key=lambda c: counts[c][i])
+    return motif
+
+
 def writeMotifLength(filename, motif):
     with open(filename, 'w') as f:
         f.write(str(len(motif)))
